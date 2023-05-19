@@ -34,7 +34,7 @@ class LinkedList {
             count += 1;
             currentNode = currentNode.nextNode;
         }
-        return count;
+        return `Total number of nodes are ${count}`;
     }
 
     // returns the first node in the list
@@ -65,6 +65,7 @@ class LinkedList {
             }
             currentNode = currentNode.nextNode;
         }
+        return `No node at the given index ${index}`;
     }
 
     // removes the last element from the list
@@ -98,4 +99,87 @@ class LinkedList {
         }
         return false;
     }
+
+    //  returns the index of the node containing value, or null if not found.
+    find(value) {
+        let currentNode = this.head;
+        let findIndex = 0;
+        while (currentNode) {
+            findIndex += 1;
+            if (currentNode.value === value) {
+                return `The index node contaning value "${value}" is at ${findIndex} `;
+            }
+            currentNode = currentNode.nextNode;
+        }
+        return null;
+    }
+
+    // represents your LinkedList objects as strings, so you can print them out and preview them in the console
+    toString() {
+        let result = '';
+        let currentNode = this.head;
+        while (currentNode) {
+            result += `(${currentNode.value}) -> `;
+            currentNode = currentNode.nextNode;
+        }
+        result += 'null';
+        return result;
+    }
+
+    //  inserts a new node with the provided value at the given index
+    insertAt(value, index) {
+        if (index < 0) return;
+        const newNode = new Node(value);
+        let currentNode = this.head;
+        let prevNode = null;
+        let countIdx = 1;
+        while (currentNode && countIdx < index) {
+            prevNode = currentNode;
+            currentNode = currentNode.nextNode;
+            countIdx++;
+        }
+        if (countIdx === index) {
+            if (prevNode) {
+                prevNode.nextNode = newNode;
+            } else {
+                this.head = newNode;
+            }
+            newNode.nextNode = currentNode;
+        }
+    }
+
+    // removes the node at the given index
+    removeAt(index) {
+        if (index < 0 || !this.head) return;
+        let currentNode = this.head;
+        let prevNode = null;
+        let countIdx = 1;
+        while (currentNode && countIdx < index) {
+            prevNode = currentNode;
+            currentNode = currentNode.nextNode;
+            countIdx++;
+        }
+        if (index === 1) {
+            this.head = currentNode.nextNode;
+            return;
+        }
+        prevNode.nextNode = currentNode.nextNode;
+    }
 }
+
+const { log } = console;
+const testList = new LinkedList(Node(1));
+testList.append(2);
+testList.prepend(0);
+log(testList.size());
+log(testList.headNode());
+log(testList.tailNode());
+log(testList.at(2));
+log(testList.pop());
+log(testList.contains(1));
+log(testList.find(1));
+log(testList.toString());
+testList.insertAt(80, 2);
+testList.removeAt(2);
+
+log(testList.head);
